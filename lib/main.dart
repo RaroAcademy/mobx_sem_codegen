@@ -35,8 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    disposer = reaction((_) => store.value, (int value) {
-      if (value % 2 != 0) {
+    disposer = reaction((_) => store.appStatus, (AppStatus status) {
+      if (status == AppStatus.loading) {
         showDialog(
           barrierDismissible: false,
           context: context,
@@ -44,8 +44,33 @@ class _MyHomePageState extends State<MyHomePage> {
             child: CircularProgressIndicator(),
           ),
         );
-        Future.delayed(Duration(seconds: 2))
-            .then((value) => Navigator.pop(context));
+      } else if (status == AppStatus.success) {
+        Navigator.pop(context);
+      } else if (status == AppStatus.error) {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => Center(
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Usuário ou senha inválidos"),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: Text("Entendi!"),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
       }
     });
     super.initState();
@@ -60,47 +85,43 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Observer(builder: (_) {
-              return Text(
-                '${store.value}',
-                style: Theme.of(context).textTheme.headline4,
-              );
-            }),
-            Observer(builder: (_) {
-              return Text(
-                '${store.duplicateValue}',
-                style: Theme.of(context).textTheme.headline4,
-              );
-            }),
-          ],
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          FloatingActionButton(
-            onPressed: store.decrement,
-            tooltip: 'Increment',
-            child: Icon(Icons.remove),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextField(
+                  decoration: InputDecoration(hintText: "Usuário"),
+                  onChanged: store.setUser,
+                ),
+                TextField(
+                  decoration: InputDecoration(hintText: "Senha"),
+                  onChanged: store.setPassword,
+                ),
+              ],
+            ),
           ),
-          FloatingActionButton(
-            onPressed: store.increment,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Observer(builder: (_) {
+                return Expanded(
+                  child: ElevatedButton(
+                    onPressed:
+                        store.userAndPAsswordValid ? () => store.login() : null,
+                    child: Text("Entrar"),
+                  ),
+                );
+              }),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

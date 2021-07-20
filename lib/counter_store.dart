@@ -4,20 +4,31 @@ part 'counter_store.g.dart';
 
 class CounterStore = CounterStoreBase with _$CounterStore;
 
+enum AppStatus { loading, success, error, empty }
+
 abstract class CounterStoreBase with Store {
   @observable
-  int value = 0;
+  AppStatus appStatus = AppStatus.empty;
+
+  @observable
+  String _user = "";
+
+  @observable
+  String _passowrd = "";
 
   @computed
-  int get duplicateValue => value * 2;
+  bool get userAndPAsswordValid => _user.isNotEmpty && _passowrd.isNotEmpty;
 
   @action
-  void increment() {
-    value++;
-  }
+  void setUser(String value) => _user = value;
 
   @action
-  void decrement() {
-    value--;
+  void setPassword(String value) => _passowrd = value;
+
+  @action
+  Future<void> login() async {
+    appStatus = AppStatus.loading;
+    await Future.delayed(Duration(seconds: 2));
+    appStatus = AppStatus.success;
   }
 }

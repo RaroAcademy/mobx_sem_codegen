@@ -76,13 +76,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: Theme.of(context).textTheme.headline4,
               );
             }),
+            Observer(builder: (_) {
+              return Text(
+                '${store.duplicateValue}',
+                style: Theme.of(context).textTheme.headline4,
+              );
+            }),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: store.increment,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          FloatingActionButton(
+            onPressed: store.decrement,
+            tooltip: 'Increment',
+            child: Icon(Icons.remove),
+          ),
+          FloatingActionButton(
+            onPressed: store.increment,
+            tooltip: 'Increment',
+            child: Icon(Icons.add),
+          ),
+        ],
       ),
     );
   }

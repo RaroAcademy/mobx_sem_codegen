@@ -10,20 +10,24 @@ abstract class CounterStoreBase with Store {
   @observable
   AppStatus appStatus = AppStatus.empty;
 
-  @observable
   String _user = "";
 
-  @observable
   String _passowrd = "";
 
-  @computed
-  bool get userAndPAsswordValid => _user.isNotEmpty && _passowrd.isNotEmpty;
+  @observable
+  bool userAndPAsswordValid = false;
 
   @action
-  void setUser(String value) => _user = value;
+  void setUser(String value) {
+    _user = value;
+    userAndPAsswordValid = _user.isNotEmpty && _passowrd.isNotEmpty;
+  }
 
   @action
-  void setPassword(String value) => _passowrd = value;
+  void setPassword(String value) {
+    _passowrd = value;
+    userAndPAsswordValid = _user.isNotEmpty && _passowrd.isNotEmpty;
+  }
 
   @action
   Future<void> login() async {

@@ -9,14 +9,6 @@ part of 'counter_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$CounterStore on CounterStoreBase, Store {
-  Computed<bool>? _$userAndPAsswordValidComputed;
-
-  @override
-  bool get userAndPAsswordValid => (_$userAndPAsswordValidComputed ??=
-          Computed<bool>(() => super.userAndPAsswordValid,
-              name: 'CounterStoreBase.userAndPAsswordValid'))
-      .value;
-
   final _$appStatusAtom = Atom(name: 'CounterStoreBase.appStatus');
 
   @override
@@ -32,33 +24,20 @@ mixin _$CounterStore on CounterStoreBase, Store {
     });
   }
 
-  final _$_userAtom = Atom(name: 'CounterStoreBase._user');
+  final _$userAndPAsswordValidAtom =
+      Atom(name: 'CounterStoreBase.userAndPAsswordValid');
 
   @override
-  String get _user {
-    _$_userAtom.reportRead();
-    return super._user;
+  bool get userAndPAsswordValid {
+    _$userAndPAsswordValidAtom.reportRead();
+    return super.userAndPAsswordValid;
   }
 
   @override
-  set _user(String value) {
-    _$_userAtom.reportWrite(value, super._user, () {
-      super._user = value;
-    });
-  }
-
-  final _$_passowrdAtom = Atom(name: 'CounterStoreBase._passowrd');
-
-  @override
-  String get _passowrd {
-    _$_passowrdAtom.reportRead();
-    return super._passowrd;
-  }
-
-  @override
-  set _passowrd(String value) {
-    _$_passowrdAtom.reportWrite(value, super._passowrd, () {
-      super._passowrd = value;
+  set userAndPAsswordValid(bool value) {
+    _$userAndPAsswordValidAtom.reportWrite(value, super.userAndPAsswordValid,
+        () {
+      super.userAndPAsswordValid = value;
     });
   }
 
